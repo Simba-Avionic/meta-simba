@@ -1,0 +1,25 @@
+From 1d42346bde918704b57919a66d1dd902674631c3 Mon Sep 17 00:00:00 2001
+From: Bartosz Snieg <snieg45@gmail.com>
+Date: Fri, 4 Aug 2023 10:33:44 +0200
+Subject: [PATCH] pin config
+
+---
+ arch/arm/boot/dts/am335x-boneblack.dts | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/arch/arm/boot/dts/am335x-boneblack.dts b/arch/arm/boot/dts/am335x-boneblack.dts
+index b956e2f60fe0..90c5fc2d60e4 100644
+--- a/arch/arm/boot/dts/am335x-boneblack.dts
++++ b/arch/arm/boot/dts/am335x-boneblack.dts
+@@ -172,3 +172,10 @@ &gpio3 {
+ &baseboard_eeprom {
+ 	vcc-supply = <&ldo4_reg>;
+ };
++
++&am33xx_pinmux {
++    pinctrl-names = "default";
++    pinctrl-0 = <&gpio_pins>;
++
++    status = "okay";  
++};
+\ No newline at end of file

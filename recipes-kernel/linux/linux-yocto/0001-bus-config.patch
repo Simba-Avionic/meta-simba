@@ -1,0 +1,66 @@
+From da981812991d2fcdbe5282d91e227767c63eca1a Mon Sep 17 00:00:00 2001
+From: Bartosz Snieg <snieg45@gmail.com>
+Date: Fri, 4 Aug 2023 10:33:21 +0200
+Subject: [PATCH] bus config
+
+---
+ arch/arm/boot/dts/am335x-bone-common.dtsi | 36 +++++++++++++++++++++--
+ 1 file changed, 34 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/am335x-bone-common.dtsi b/arch/arm/boot/dts/am335x-bone-common.dtsi
+index 02e04a12a270..bc4b703322ee 100644
+--- a/arch/arm/boot/dts/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
+@@ -84,11 +84,32 @@ AM33XX_PADCONF(AM335X_PIN_I2C0_SCL, PIN_INPUT_PULLUP, MUX_MODE0)	/* i2c0_scl.i2c
+ 
+ 	i2c2_pins: pinmux_i2c2_pins {
+ 		pinctrl-single,pins = <
+-			AM33XX_PADCONF(AM335X_PIN_UART1_CTSN, PIN_INPUT_PULLUP, MUX_MODE3)	/* uart1_ctsn.i2c2_sda */
+-			AM33XX_PADCONF(AM335X_PIN_UART1_RTSN, PIN_INPUT_PULLUP, MUX_MODE3)	/* uart1_rtsn.i2c2_scl */
++			AM33XX_PADCONF(AM335X_PIN_SPI0_SCLK, PIN_INPUT_PULLUP, MUX_MODE2)	/* P9.22*/
++			AM33XX_PADCONF(AM335X_PIN_SPI0_D0, PIN_INPUT_PULLUP, MUX_MODE2)		/* P9.21*/
+ 		>;
+ 	};
+ 
++	bb_dcan0_pins: pinmux_dcan0_pins{
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_UART1_CTSN, PIN_OUTPUT_PULLUP, MUX_MODE2)	/* P9.20 TX at transmiter*/
++			AM33XX_PADCONF(AM335X_PIN_UART1_RTSN, PIN_INPUT_PULLUP, MUX_MODE2)	/* P9.19 RX at transmiter*/
++		>;
++	};
++
++	bb_dcan1_pins: pinmux_dcan1_pins{
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_UART1_RXD, PIN_OUTPUT_PULLUP, MUX_MODE2)	/* P9.26 TX at transmiter*/
++			AM33XX_PADCONF(AM335X_PIN_UART1_TXD, PIN_INPUT_PULLUP, MUX_MODE2)	/* P9.24 RX at transmiter*/
++ 		>;
++ 	};
++
++	gpio_pins: pinmux_gpio_pins {
++        pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_ADVN_ALE, PIN_OUTPUT, MUX_MODE7)	/* gpio2_2 */
++			AM33XX_PADCONF(AM335X_PIN_GPMC_OEN_REN, PIN_OUTPUT, MUX_MODE7)	/* gpio2_3 */			
++        >;
++    };
++	
+ 	uart0_pins: pinmux_uart0_pins {
+ 		pinctrl-single,pins = <
+ 			AM33XX_PADCONF(AM335X_PIN_UART0_RXD, PIN_INPUT_PULLUP, MUX_MODE0)
+@@ -272,6 +293,17 @@ cape3_data: cape_data@0 {
+ 	};
+ };
+ 
++&dcan0 {
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&bb_dcan0_pins>;
++};
++
++&dcan1 {
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&bb_dcan1_pins>;
++};
+ 
+ /include/ "tps65217.dtsi"
+ 
