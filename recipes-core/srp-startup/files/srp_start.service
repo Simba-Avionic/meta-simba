@@ -6,13 +6,11 @@ After=multi-user.target
 AllowIsolate=yes
 
 [Service]
-Type=simple
-ExecStart=/bin/srp_start.sh
+Type=forking
+ExecStart=/bin/bash -c /bin/srp_start.sh
 StandardOutput=journal+console
 StandardError=journal+console
 SyslogIdentifier=srp_start
-Restart=on-failure
-RestartSec=5
 
 [Install]
 WantedBy=multi-user.target

@@ -33,8 +33,10 @@ if [ "$(ls -A /etc/simba/new | grep .tar)" ]; then
         for file in /etc/simba/new/*.tar; do
             echo "Opening: $file"
             cp $file /etc/simba/current
+            rm -rf /opt/*
             tar -xvf $file -C /
             rm $file
+            ls -la /opt
         done
     else
         sh /opt/cpu_simba/update.sh
@@ -44,4 +46,3 @@ else
 fi
 
 sh /opt/cpu_simba/start_up.sh
-sleep infinity

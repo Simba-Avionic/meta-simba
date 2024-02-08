@@ -28,6 +28,10 @@ do_install:append() {
     install -m 0644 ${WORKDIR}/srp_start.service  ${D}${systemd_system_unitdir}
 }
 
+DEPENDS = "bash"
+
+RDEPENDS:${PN} = "bash"
+
 FILES:${PN} += "\
     /bin/srp_start.sh \
     ${systemd_system_unitdir}/srp_start.service \

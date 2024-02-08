@@ -285,6 +285,7 @@ CONF_VERSION = "2"
 DISTRO_FEATURES:remove = " acl alsa bluetooth pcmcia x11 opengl wayland vulkan"
 DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " pulseaudio"
 IMAGE_INSTALL_APPEND = " openssh "
+IMAGE_INSTALL_APPEND = " bash"
 
 # Enable systemd as an init system
 DISTRO_FEATURES:append = " systemd can"
