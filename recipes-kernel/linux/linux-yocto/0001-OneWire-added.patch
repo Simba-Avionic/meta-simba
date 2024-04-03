@@ -1,0 +1,105 @@
+From 00e64ffb4a7c72081e2d655f22c2f01cf4f348d2 Mon Sep 17 00:00:00 2001
+From: Bartosz Snieg <snieg45@gmail.com>
+Date: Wed, 3 Apr 2024 08:16:25 +0200
+Subject: [PATCH] OneWire added
+
+---
+ arch/arm/boot/dts/am335x-bone-common.dtsi | 50 +++++++++++++++++++++--
+ 1 file changed, 47 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/boot/dts/am335x-bone-common.dtsi b/arch/arm/boot/dts/am335x-bone-common.dtsi
+index 02e04a12a270..4f92de8fe406 100644
+--- a/arch/arm/boot/dts/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
+@@ -3,6 +3,9 @@
+  * Copyright (C) 2012 Texas Instruments Incorporated - https://www.ti.com/
+  */
+ 
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/pinctrl/am33xx.h>
++
+ / {
+ 	cpus {
+ 		cpu@0 {
+@@ -74,7 +77,11 @@ AM33XX_PADCONF(AM335X_PIN_GPMC_A7, PIN_OUTPUT_PULLDOWN, MUX_MODE7)	/* gpmc_a7.gp
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_A8, PIN_OUTPUT_PULLUP, MUX_MODE7)	/* gpmc_a8.gpio1_24 */
+ 		>;
+ 	};
+-
++	bb_dallas_w1_pins: pinmux_bb_dallas_w1_pins {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_BEN1, PIN_INPUT_PULLUP, MUX_MODE7)	/* P9_12 (U18) gpmc_be1n.gpio1_28 */
++		>;
++	};
+ 	i2c0_pins: pinmux_i2c0_pins {
+ 		pinctrl-single,pins = <
+ 			AM33XX_PADCONF(AM335X_PIN_I2C0_SDA, PIN_INPUT_PULLUP, MUX_MODE0)	/* i2c0_sda.i2c0_sda */
+@@ -84,11 +91,25 @@ AM33XX_PADCONF(AM335X_PIN_I2C0_SCL, PIN_INPUT_PULLUP, MUX_MODE0)	/* i2c0_scl.i2c
+ 
+ 	i2c2_pins: pinmux_i2c2_pins {
+ 		pinctrl-single,pins = <
+-			AM33XX_PADCONF(AM335X_PIN_UART1_CTSN, PIN_INPUT_PULLUP, MUX_MODE3)	/* uart1_ctsn.i2c2_sda */
+-			AM33XX_PADCONF(AM335X_PIN_UART1_RTSN, PIN_INPUT_PULLUP, MUX_MODE3)	/* uart1_rtsn.i2c2_scl */
++			AM33XX_PADCONF(AM335X_PIN_SPI0_SCLK, PIN_INPUT_PULLUP, MUX_MODE2)	/* P9.22*/
++			AM33XX_PADCONF(AM335X_PIN_SPI0_D0, PIN_INPUT_PULLUP, MUX_MODE2)		/* P9.21*/
+ 		>;
+ 	};
+ 
++	bb_dcan0_pins: pinmux_dcan0_pins{
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_UART1_CTSN, PIN_OUTPUT_PULLUP, MUX_MODE2)	/* P9.20 TX at transmiter*/
++			AM33XX_PADCONF(AM335X_PIN_UART1_RTSN, PIN_INPUT_PULLUP, MUX_MODE2)	/* P9.19 RX at transmiter*/
++		>;
++	};
++
++	bb_dcan1_pins: pinmux_dcan1_pins{
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_UART1_RXD, PIN_OUTPUT_PULLUP, MUX_MODE2)	/* P9.26 TX at transmiter*/
++			AM33XX_PADCONF(AM335X_PIN_UART1_TXD, PIN_INPUT_PULLUP, MUX_MODE2)	/* P9.24 RX at transmiter*/
++ 		>;
++ 	};
++
+ 	uart0_pins: pinmux_uart0_pins {
+ 		pinctrl-single,pins = <
+ 			AM33XX_PADCONF(AM335X_PIN_UART0_RXD, PIN_INPUT_PULLUP, MUX_MODE0)
+@@ -190,6 +211,17 @@ &uart0 {
+ 
+ 	status = "okay";
+ };
++&dcan0 {
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&bb_dcan0_pins>;
++};
++
++&dcan1 {
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&bb_dcan1_pins>;
++};
+ 
+ &usb0 {
+ 	dr_mode = "peripheral";
+@@ -273,6 +305,16 @@ cape3_data: cape_data@0 {
+ };
+ 
+ 
++&{/} {
++	onewire {
++		status = "okay";
++		pinctrl-names = "default";
++		pinctrl-0 = <&bb_dallas_w1_pins>;
++
++		compatible = "w1-gpio";
++		gpios = <&gpio1 28 GPIO_ACTIVE_HIGH>;
++	};
++};
+ /include/ "tps65217.dtsi"
+ 
+ &tps {
+@@ -409,3 +451,5 @@ &pruss_tm {
+ &wkup_m3_ipc {
+ 	firmware-name = "am335x-bone-scale-data.bin";
+ };
++
++
