@@ -5,8 +5,8 @@
 #
 ################################################################################
 #
-echo "Simab SRP start up script"
+echo "SRP start up script"
 
-sh /opt/cpu_simba/network_interface.sh
+sh /srp/opt/cpu_simba/network_interface.sh
 
-echo "Simab SRP start up script [DONE]"
+echo "SRP start up script [DONE]"

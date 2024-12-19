@@ -1,48 +1,60 @@
 #!/bin/bash
 
-if [ ! -d "/etc/simba" ]; then
-        cd /etc
-        mkdir simba
+out_put_file="/srp/token/token.hex"
+out_put_file_ver="/srp/token/token.hex.sha1"
+
+if [ ! -d "/srp/update" ]; then
+        cd /srp
+        mkdir update
         echo "SRP sw dir  added"
 fi
 
-if [ ! -d "/etc/simba/backup" ]; then
-        cd /etc/simba
+if [ ! -d "/srp/update/backup" ]; then
+        cd /srp/update
         mkdir backup
         echo "Backup dir added"
 fi
 
-if [ ! -d "/etc/simba/new" ]; then
-        cd /etc/simba
+if [ ! -d "/srp/update/new" ]; then
+        cd /srp/update
         mkdir new
         echo "New dir added"
 fi
 
-if [ ! -d "/etc/simba/current" ]; then
-        cd /etc/simba
+if [ ! -d "/srp/update/current" ]; then
+        cd /srp/update
         mkdir current
         echo "Current dir added"
 fi
 
-# if [ "$(ls -A /etc/simba/new | grep .tar)" ]; then
-#     echo "SRP update detected:"
-#     ls -A /etc/simba/new
+if [ ! -e "/srp/token/token.hex" ]
+then
+        if [ ! -d "/srp/token" ]; then
+                cd /srp
+                mkdir token
+        fi
+        var1="$(cat /sys/class/net/*/address | tr -d '\n')"
+        sec='sec_token2'
+        eng='eng_token2'
+        upload='upload_token2'
+        sec=$var1$sec
+        sec="$(echo $sec | sha256sum)"
+        eng=$var1$eng
+        eng="$(echo $eng | sha256sum)"
+        upload=$var1$upload
+        upload="$(echo $upload | sha256sum)"
+        echo ${sec::-3} > $out_put_file
+        echo ${eng::-3} >> $out_put_file
+        echo ${upload::-3} >> $out_put_file
+        ver_hash="$(sha1sum $out_put_file)"
+        echo $ver_hash > $out_put_file_ver
+        chmod -w $out_put_file
+        chmod -w $out_put_file_ver
+fi
 
-#     if [ ! -d "/opt/cpu_simba/update.sh" ]; then
-#         echo "Update script not detected !!!"
-#         for file in /etc/simba/new/*.tar; do
-#             echo "Opening: $file"
-#             cp $file /etc/simba/current
-#             tar -xvf $file
-#             mv -fv opt /
-#             rm $file
-#             ls -la /opt
-#         done
-#     else
-#         sh /opt/cpu_simba/update.sh
-#     fi
-# else
-#     echo "SRP update not detected"
-# fi
-
-sh /opt/cpu_simba/start_up.sh
+if sha1sum -c $out_put_file_ver;
+then
+sh /srp/opt/cpu_simba/start_up.sh
+else
+echo "[SRP]: [ERROR] Wykryto naruszenie plikow bezpieczenstwa"
+fi
