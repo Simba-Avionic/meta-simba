@@ -1,0 +1,98 @@
+From 0cce9ad15712538c96c6c1daabfc46551c255b29 Mon Sep 17 00:00:00 2001
+From: Bartosz Snieg <snieg45@gmail.com>
+Date: Sat, 9 Nov 2024 19:32:51 +0100
+Subject: [PATCH] Replace_can_by_uart
+Upstream-Status: Submitted [snieg45@gmail.com]
+---
+ .../boot/dts/ti/omap/am335x-bone-common.dtsi  | 43 +++++++++++++++++--
+ 1 file changed, 40 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
+index 96451c8a815c..262c3f36809d 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
+@@ -4,6 +4,10 @@
+  */
+ 
+ / {
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/pinctrl/am33xx.h>
++
+ 	cpus {
+ 		cpu@0 {
+ 			cpu0-supply = <&dcdc2_reg>;
+@@ -75,6 +79,21 @@ AM33XX_PADCONF(AM335X_PIN_GPMC_A8, PIN_OUTPUT_PULLUP, MUX_MODE7)	/* gpmc_a8.gpio
+ 		>;
+ 	};
+ 
++	bb_dallas_w1_pins: pinmux_bb_dallas_w1_pins {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_BEN1, PIN_INPUT_PULLUP, MUX_MODE7)	/* P9_12 (U18) gpmc_be1n.gpio1_28 */
++		>;
++	};
++
++	bb_uart1_pins: pinmux_bb_uart1_pins {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_UART1_TXD, PIN_OUTPUT, MUX_MODE0)	/* P9_24 uart1_txd.uart1_txd */
++			AM33XX_PADCONF(AM335X_PIN_UART1_RXD, PIN_INPUT, MUX_MODE0)	/* P9_26 uart1_rxd.uart1_rxd */
++			//AM33XX_PADCONF(AM335X_PIN_UART1_RTSN, PIN_OUTPUT, MUX_MODE0)	/* P9_19 uart1_rtsn.uart1_rtsn */
++			//AM33XX_PADCONF(AM335X_PIN_UART1_CTSN, PIN_INPUT, MUX_MODE0)	/* P9_20 uart1_ctsn.uart1_ctsn */
++		>;
++	};
++
+ 	i2c0_pins: i2c0-pins {
+ 		pinctrl-single,pins = <
+ 			AM33XX_PADCONF(AM335X_PIN_I2C0_SDA, PIN_INPUT_PULLUP, MUX_MODE0)	/* i2c0_sda.i2c0_sda */
+@@ -84,8 +103,8 @@ AM33XX_PADCONF(AM335X_PIN_I2C0_SCL, PIN_INPUT_PULLUP, MUX_MODE0)	/* i2c0_scl.i2c
+ 
+ 	i2c2_pins: i2c2-pins {
+ 		pinctrl-single,pins = <
+-			AM33XX_PADCONF(AM335X_PIN_UART1_CTSN, PIN_INPUT_PULLUP, MUX_MODE3)	/* uart1_ctsn.i2c2_sda */
+-			AM33XX_PADCONF(AM335X_PIN_UART1_RTSN, PIN_INPUT_PULLUP, MUX_MODE3)	/* uart1_rtsn.i2c2_scl */
++			AM33XX_PADCONF(AM335X_PIN_SPI0_SCLK, PIN_INPUT_PULLUP, MUX_MODE2)	/* P9.22*/
++			AM33XX_PADCONF(AM335X_PIN_SPI0_D0, PIN_INPUT_PULLUP, MUX_MODE2)		/* P9.21*/
+ 		>;
+ 	};
+ 
+@@ -188,6 +207,14 @@ AM33XX_PADCONF(AM335X_PIN_GPMC_AD7, PIN_INPUT_PULLUP, MUX_MODE1) /* gpmc_ad7.mmc
+ 	};
+ };
+ 
++
++&uart1 {
++	/* sudo agetty 115200 ttyS1 */
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&bb_uart1_pins>;
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pins>;
+@@ -277,6 +304,16 @@ cape3_data: cape_data@0 {
+ 	};
+ };
+ 
++&{/} {
++	onewire {
++		status = "okay";
++		pinctrl-names = "default";
++		pinctrl-0 = <&bb_dallas_w1_pins>;
++
++		compatible = "w1-gpio";
++		gpios = <&gpio1 28 GPIO_ACTIVE_HIGH>;
++	};
++};
+ 
+ /include/ "../../tps65217.dtsi"
+ 
+@@ -385,7 +422,7 @@ ethphy0: ethernet-phy@0 {
+ 		/* Support GPIO reset on revision C3 boards */
+ 		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
+ 		reset-assert-us = <300>;
+-		reset-deassert-us = <6500>;
++		reset-deassert-us = <13000>;
+ 	};
+ };
+ 

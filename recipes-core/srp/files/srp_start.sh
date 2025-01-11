@@ -54,7 +54,7 @@ fi
 
 if sha1sum -c $out_put_file_ver;
 then
-sh /srp/opt/cpu_simba/start_up.sh
+sh /srp/opt/cpu_srp/start_up.sh
 else
 echo "[SRP]: [ERROR] Wykryto naruszenie plikow bezpieczenstwa"
 fi
