@@ -18,10 +18,10 @@ do_install () {
     install -d ${D}${sysconfdir}/init.d/ 
     install -c -m 755 ${WORKDIR}/${INITSCRIPT_NAME} ${D}${sysconfdir}/init.d/${INITSCRIPT_NAME} 
 
-    install -d ${D}/opt/cpu_simba
+    install -d ${D}/srp/opt/cpu_srp
 
-    install -m 0777 ${WORKDIR}/network_interface.sh ${D}/opt/cpu_simba
-    install -m 0777 ${WORKDIR}/start_up.sh  ${D}/opt/cpu_simba
+    install -m 0777 ${WORKDIR}/network_interface.sh ${D}/srp/opt/cpu_srp
+    install -m 0777 ${WORKDIR}/start_up.sh  ${D}/srp/opt/cpu_srp
 
 } 
 
@@ -30,6 +30,6 @@ DEPENDS = "bash"
 RDEPENDS:${PN} = "bash"
 
 FILES:${PN} += "\
-    /opt/cpu_simba/start_up.sh \
-    /opt/cpu_simba/network_interface.sh  \
+    /srp/opt/cpu_srp/start_up.sh \
+    /srp/opt/cpu_srp/network_interface.sh  \
 "

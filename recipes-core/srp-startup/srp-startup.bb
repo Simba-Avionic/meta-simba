@@ -18,12 +18,12 @@ do_install:append() {
 
     install -d ${D}${systemd_system_unitdir}
     install -d ${D}/bin
-    install -d ${D}/opt/cpu_simba
+    install -d ${D}/srp/opt/cpu_srp
     
     install -m 0777 ${WORKDIR}/srp_start.sh  ${D}/bin
 
-    install -m 0777 ${WORKDIR}/network_interface.sh ${D}/opt/cpu_simba
-    install -m 0777 ${WORKDIR}/start_up.sh  ${D}/opt/cpu_simba
+    install -m 0777 ${WORKDIR}/network_interface.sh ${D}/srp/opt/cpu_srp
+    install -m 0777 ${WORKDIR}/start_up.sh  ${D}/srp/opt/cpu_srp
 
     install -m 0644 ${WORKDIR}/srp_start.service  ${D}${systemd_system_unitdir}
 }
@@ -35,6 +35,6 @@ RDEPENDS:${PN} = "bash"
 FILES:${PN} += "\
     /bin/srp_start.sh \
     ${systemd_system_unitdir}/srp_start.service \
-    /opt/cpu_simba/start_up.sh \
-    /opt/cpu_simba/network_interface.sh  \
+    /srp/opt/cpu_srp/start_up.sh \
+    /srp/opt/cpu_srp/network_interface.sh  \
 "

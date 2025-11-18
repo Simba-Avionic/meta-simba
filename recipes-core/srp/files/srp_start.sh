@@ -1,26 +1,22 @@
 #!/bin/bash
 
-if [ ! -d "/etc/simba" ]; then
-        cd /etc
-        mkdir simba
+if [ ! -d "/srp/update/" ]; then
+        mkdir -p /srp/update/
         echo "SRP sw dir  added"
 fi
 
-if [ ! -d "/etc/simba/backup" ]; then
-        cd /etc/simba
-        mkdir backup
+if [ ! -d "/srp/update/backup" ]; then
+        mkdir -p /srp/update/backup
         echo "Backup dir added"
 fi
 
-if [ ! -d "/etc/simba/new" ]; then
-        cd /etc/simba
-        mkdir new
+if [ ! -d "/srp/update/new" ]; then
+        mkdir -p /srp/update/new
         echo "New dir added"
 fi
 
-if [ ! -d "/etc/simba/current" ]; then
-        cd /etc/simba
-        mkdir current
+if [ ! -d "/srp/update/current" ]; then
+        mkdir -p /srp/update/current
         echo "Current dir added"
 fi
 
@@ -28,7 +24,7 @@ fi
 #     echo "SRP update detected:"
 #     ls -A /etc/simba/new
 
-#     if [ ! -d "/opt/cpu_simba/update.sh" ]; then
+#     if [ ! -d "/srp/opt/cpu_srp/update.sh" ]; then
 #         echo "Update script not detected !!!"
 #         for file in /etc/simba/new/*.tar; do
 #             echo "Opening: $file"
@@ -39,10 +35,10 @@ fi
 #             ls -la /opt
 #         done
 #     else
-#         sh /opt/cpu_simba/update.sh
+#         sh /srp/opt/cpu_srp/update.sh
 #     fi
 # else
 #     echo "SRP update not detected"
 # fi
 
-sh /opt/cpu_simba/start_up.sh
+sh /srp/opt/cpu_srp/start_up.sh

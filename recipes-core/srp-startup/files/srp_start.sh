@@ -28,7 +28,7 @@ if [ "$(ls -A /etc/simba/new | grep .tar)" ]; then
     echo "SRP update detected:"
     ls -A /etc/simba/new
 
-    if [ ! -d "/opt/cpu_simba/update.sh" ]; then
+    if [ ! -d "/srp/opt/cpu_srp/update.sh" ]; then
         echo "Update script not detected !!!"
         for file in /etc/simba/new/*.tar; do
             echo "Opening: $file"
@@ -37,11 +37,11 @@ if [ "$(ls -A /etc/simba/new | grep .tar)" ]; then
             rm $file
         done
     else
-        sh /opt/cpu_simba/update.sh
+        sh /srp/opt/cpu_srp/update.sh
     fi
 else
     echo "SRP update not detected"
 fi
 
-sh /opt/cpu_simba/start_up.sh
+sh /srp/opt/cpu_srp/start_up.sh
 sleep infinity
