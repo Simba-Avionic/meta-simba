@@ -1,0 +1,47 @@
+From 02b262d830263772f9035361138a99ffba19ec8b Mon Sep 17 00:00:00 2001
+From: Kondracki Krzysztof <kondracki.christopher@gmail.com>
+Date: Sat, 18 Apr 2026 00:00:00 +0000
+Subject: [PATCH] ARM: dts: am335x-bone-common: enable UART4 on P9.11/P9.13
+
+BeagleBone Black: mux GPMC_WAIT0 / GPMC_WPN to uart4_rxd / uart4_txd (MODE6)
+and enable uart4.
+---
+ arch/arm/boot/dts/am335x-bone-common.dtsi | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/arch/arm/boot/dts/am335x-bone-common.dtsi b/arch/arm/boot/dts/am335x-bone-common.dtsi
+index bc4b703322ee..822a2339ea63 100644
+--- a/arch/arm/boot/dts/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
+@@ -117,6 +117,14 @@ AM33XX_PADCONF(AM335X_PIN_UART0_TXD, PIN_OUTPUT_PULLDOWN, MUX_MODE0)
+ 		>;
+ 	};
+ 
++	/* UART4 on BBB P9.11 (RX) / P9.13 (TX), MODE6 */
++	bb_uart4_pins: pinmux_bb_uart4_pins {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_WAIT0, PIN_INPUT, MUX_MODE6)	/* P9.11 uart4_rxd */
++			AM33XX_PADCONF(AM335X_PIN_GPMC_WPN, PIN_OUTPUT_PULLDOWN, MUX_MODE6)	/* P9.13 uart4_txd */
++		>;
++	};
++
+ 	clkout2_pin: pinmux_clkout2_pin {
+ 		pinctrl-single,pins = <
+ 			AM33XX_PADCONF(AM335X_PIN_XDMA_EVENT_INTR1, PIN_OUTPUT_PULLDOWN, MUX_MODE3)	/* xdma_event_intr1.clkout2 */
+@@ -212,6 +220,13 @@ &uart0 {
+ 	status = "okay";
+ };
+ 
++&uart4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&bb_uart4_pins>;
++
++	status = "okay";
++};
++
+ &usb0 {
+ 	dr_mode = "peripheral";
+ 	interrupts-extended = <&intc 18 &tps 0>;
+-- 
+2.43.0
+
