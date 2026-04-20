@@ -5,8 +5,7 @@ SRC_URI += "\
     file://srp_start.sh \
     file://start_up.sh \
     file://network_interface.sh \
-    file://srp_start.service \
-"
+    file://srp_start.service"
 
 inherit systemd
 
@@ -32,5 +31,4 @@ FILES:${PN} += "\
     /bin/srp_start.sh \
     ${systemd_system_unitdir}/srp_start.service \
     /opt/cpu_simba/start_up.sh \
-    /opt/cpu_simba/network_interface.sh  \
-"
+    /opt/cpu_simba/network_interface.sh"
