@@ -46,10 +46,10 @@ GROUPADD_PARAM:${PN}-user3 = "-g 900 group3"
 do_install () {
 	install -d -m 755 ${D}${datadir}/srpapp
 	install -d -m 755 ${D}${datadir}/user3
-	install -p -m 644 file1 ${D}${datadir}/srpapp/
+	install -p -m 644 ${WORKDIR}/file1 ${D}${datadir}/srpapp/
 
-	install -p -m 644 file3 ${D}${datadir}/user3/
-	install -p -m 644 file4 ${D}${datadir}/user3/
+	install -p -m 644 ${WORKDIR}/file3 ${D}${datadir}/user3/
+	install -p -m 644 ${WORKDIR}/file4 ${D}${datadir}/user3/
 	install -d ${D}/persistence
     install -d ${D}/logs
     chmod 0666 ${D}/persistence
