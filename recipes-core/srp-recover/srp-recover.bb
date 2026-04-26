@@ -10,11 +10,11 @@ INITSCRIPT_PARAMS = "start 99 5 ."
  
 inherit update-rc.d 
  
-S = "${UNPACKDIR}" 
+S = "${WORKDIR}" 
  
 do_install () { 
     install -d ${D}${sysconfdir}/init.d/ 
-    install -c -m 755 ${UNPACKDIR}/${INITSCRIPT_NAME} ${D}${sysconfdir}/init.d/${INITSCRIPT_NAME} 
+    install -c -m 755 ${WORKDIR}/${INITSCRIPT_NAME} ${D}${sysconfdir}/init.d/${INITSCRIPT_NAME} 
 } 
 
 DEPENDS = "bash"

@@ -12,7 +12,7 @@ INITSCRIPT_PARAMS = "start 1 S ."
  
 inherit update-rc.d 
  
-S = "${UNPACKDIR}" 
+S = "${WORKDIR}" 
  
 do_install () { 
     
@@ -27,10 +27,10 @@ do_install () {
     # chmod 0666 ${D}/logs
     # touch ${D}/logs/.keep
     install -d ${D}${sysconfdir}/init.d/ 
-    install -c -m 755 ${UNPACKDIR}/${INITSCRIPT_NAME} ${D}${sysconfdir}/init.d/${INITSCRIPT_NAME} 
+    install -c -m 755 ${WORKDIR}/${INITSCRIPT_NAME} ${D}${sysconfdir}/init.d/${INITSCRIPT_NAME} 
 
-    install -m 0755 ${UNPACKDIR}/network_interface.sh ${D}/srp/opt/cpu_srp
-    install -m 0755 ${UNPACKDIR}/start_up.sh  ${D}/srp/opt/cpu_srp
+    install -m 0755 ${WORKDIR}/network_interface.sh ${D}/srp/opt/cpu_srp
+    install -m 0755 ${WORKDIR}/start_up.sh  ${D}/srp/opt/cpu_srp
 } 
 
 DEPENDS = "bash"
