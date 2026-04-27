@@ -1,14 +1,12 @@
- 
-#!/bin/sh
+ #!/bin/bash
 ################################################################################
 #
 #   Copyright (c) 2024 Bartosz Snieg.
 #
 ################################################################################
 #
-echo "Simab SRP start up script"
+echo "SRP start up script"
 
-sh /opt/cpu_simba/network_interface.sh
-sh /opt/cpu_simba/component_start_up.sh
+sh /srp/opt/cpu_srp/network_interface.sh
 
-echo "Simab SRP start up script [DONE]"
+echo "SRP start up script [DONE]"
