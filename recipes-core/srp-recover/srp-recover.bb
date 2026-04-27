@@ -2,7 +2,7 @@ DESCRIPTION = "SRP Initscripts"
 LICENSE = "CLOSED" 
  
 SRC_URI += "\
-    file://srp_recover.sh \
+    file://files/srp_recover.sh \
 "
  
 INITSCRIPT_NAME = "srp_recover.sh" 

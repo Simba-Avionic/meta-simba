@@ -2,9 +2,9 @@ DESCRIPTION = "SRP Initscripts"
 LICENSE = "CLOSED" 
  
 SRC_URI += "\
-    file://srp_start.sh \
-    file://start_up.sh \
-    file://network_interface.sh \
+    file://files/srp_start.sh \
+    file://files/start_up.sh \
+    file://files/network_interface.sh \
 "
  
 INITSCRIPT_NAME = "srp_start.sh" 
