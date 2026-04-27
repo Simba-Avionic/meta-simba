@@ -7,7 +7,7 @@ SRC_URI += "\
     file://network_interface.sh \
 "
  
-INITSCRIPT_NAME = "files/srp_start.sh" 
+INITSCRIPT_NAME = "srp_start.sh" 
 INITSCRIPT_PARAMS = "start 1 S ." 
  
 inherit update-rc.d 

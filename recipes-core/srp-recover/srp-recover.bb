@@ -5,7 +5,7 @@ SRC_URI += "\
     file://srp_recover.sh \
 "
  
-INITSCRIPT_NAME = "files/srp_recover.sh" 
+INITSCRIPT_NAME = "srp_recover.sh" 
 INITSCRIPT_PARAMS = "start 99 5 ." 
  
 inherit update-rc.d 
